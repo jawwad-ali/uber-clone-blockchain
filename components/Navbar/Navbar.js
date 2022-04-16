@@ -14,8 +14,7 @@ const style = {
     loginText: `ml-2`
 }
 
-const currentAccount = ""
-// const currentAccount = "0x1f5B0651B20563bEA4dA0C638ae88389De0cAC30"
+const currentAccount = "0x1f5B0651B20563bEA4dA0C638ae88389De0cAC30"
 
 const Navbar = () => {
     return (
