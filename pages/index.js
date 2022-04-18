@@ -13,7 +13,7 @@ const style = {
 
 export default function Home() {
   return (
-    <div className={style.wrapper}>
+    <div className={style.wrapper}> 
       <Navbar />
 
       <div className={style.main}>
@@ -21,7 +21,7 @@ export default function Home() {
       </div>
 
       <div className={style.rideRequestContainer}>
-        <div className={style.rideRequest}>
+        <div className={style.rideRequest}> 
           <LocationSelector />
           <Confirm />
         </div>
@@ -29,5 +29,4 @@ export default function Home() {
     </div>
   )
 }
-// 33.16
-// 43.57
+// 54.00

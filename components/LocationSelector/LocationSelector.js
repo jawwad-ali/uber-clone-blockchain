@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
+import { UberContext } from "../../context/uberContext"
 
-const style = {
+const style = { 
     wrapper: `pt-2`,
     searchHeader: `w-full font-bold text-left flex items-center text-3xl p-4 overflow-hidden`,
     inputBoxes: `flex flex-col mb-4 relative`,
@@ -10,12 +11,11 @@ const style = {
     input: `my-2 rounded-2 p-2 outline-none border-none bg-transparent h-full w-full`,
     verticalLine: `w-0 h-[2rem] border-black border absolute z-10 left-[2.3rem] top-[2rem]`,
 }
- 
+
 const LocationSelector = () => {
 
-    const [inFocus, setInFocus] = useState("from") 
-    const [dropoff, setDropoff] = useState("")
-    const [pickup, setPickup] = useState("")
+    const [inFocus, setInFocus] = useState("from")
+    const { pickup, setPickup, dropoff, setDropoff } = useContext(UberContext)
 
     return (
         <div className={style.wrapper}>
@@ -44,7 +44,7 @@ const LocationSelector = () => {
                         onChange={(e) => setPickup(e.target.value)}
                         onFocus={() => setInFocus("from")}
                     />
-                </div> 
+                </div>
 
                 <div className={style.verticalLine} />
 
@@ -55,7 +55,7 @@ const LocationSelector = () => {
                                 fillRule='evenodd'
                                 clipRule='evenodd'
                                 d='M14 10h-4v4h4v-4zM7 7v10h10V7H7z'
-                            /> 
+                            />
                         </svg>
                     </div>
                     <input
@@ -64,11 +64,11 @@ const LocationSelector = () => {
                         value={dropoff}
                         onChange={e => setDropoff(e.target.value)}
                         onFocus={() => setInFocus("to")}
-                    /> 
+                    />
                 </div>
             </div>
         </div>
-    ) 
+    )
 }
 
 export default LocationSelector
