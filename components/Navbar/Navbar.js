@@ -1,6 +1,8 @@
 import Image from "next/image"
 import Avatar from "../../temp/avatar.webp"
 import { BsPerson } from "react-icons/bs"
+import { UberContext } from "../../context/uberContext"
+import { useContext } from "react"
 
 const style = {
     wrapper: `h-16 w-full bg-black text-white flex md:justify-around items-center px-60 fixed z-20 `,
@@ -14,9 +16,9 @@ const style = {
     loginText: `ml-2`
 }
 
-const currentAccount = "0x1f5B0651B20563bEA4dA0C638ae88389De0cAC30"
-
 const Navbar = () => {
+    const { currentAccount, connectWallet } = useContext(UberContext)
+
     return (
         <div className={style.wrapper}>
             <div className={style.leftMenu}>
@@ -38,7 +40,7 @@ const Navbar = () => {
                         {currentAccount.slice(0, 6)}.....{currentAccount.slice(39)}
                     </div>
                 ) : (
-                    <div className={style.loginButton}>
+                    <div className={style.loginButton} onClick={() => connectWallet()}>
                         <BsPerson />
                         <span className={style.loginText}>Please Login</span>
                     </div>

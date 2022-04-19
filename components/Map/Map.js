@@ -3,16 +3,15 @@ import mapboxgl from "mapbox-gl"
 import Head from "next/head"
 import { UberContext } from "../../context/uberContext"
 
-const style = { 
+const style = {
     wrapper: `flex-1 h-full w-full`,
 }
 
-mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN 
+mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
 
 const Map = () => {
 
     const { pickupCoordinates, dropoffCoordinates } = useContext(UberContext)
-    console.log(pickupCoordinates, dropoffCoordinates)
 
     useEffect(() => {
         const map = new mapboxgl.Map({
@@ -24,24 +23,24 @@ const Map = () => {
 
         if (pickupCoordinates) {
             addToMap(map, pickupCoordinates)
-        }
+        } 
 
         if (dropoffCoordinates) {
             addToMap(map, dropoffCoordinates)
-        }
+        } 
 
         if (pickupCoordinates && dropoffCoordinates) {
             map.fitBounds([dropoffCoordinates, pickupCoordinates], {
-                padding: 60
-            })  
-        }
-    }, [])
+                padding: 200
+            })
+        } 
+    }, [pickupCoordinates, dropoffCoordinates])
 
     // function to add Pins to map
     const addToMap = (map, coordinates) => {
         const marker1 = new mapboxgl.Marker().setLngLat(coordinates).addTo(map)
     }
- 
+
     return (
         <>
             <Head>
