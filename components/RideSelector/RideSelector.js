@@ -1,6 +1,7 @@
 import ethLogo from "../../assets/eth-logo.png"
 import Image from "next/image"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
+import { UberContext } from "../../context/uberContext"
 
 const style = {
     wrapper: `h-full flex flex-col `,
@@ -21,28 +22,40 @@ const basePrice = 1542
 const RideSelector = () => {
 
     const [carList, setCarList] = useState([])
+    const { setSelectedRide, selectedRide, setPrice } = useContext(UberContext)
 
-    useEffect(() => {
+    useEffect(() => { 
         (async () => {
             try {
                 const response = await fetch("/api/db/getRideTypes")
                 const data = await response.json()
-                setCarList(data.data)
+                setCarList(data.data) 
+                setSelectedRide(data.data[0])
             }
             catch (err) {
                 console.log(err)
-            }
+            } 
         })()
     }, [])
 
-    return (
+    return ( 
         <div className={style.wrapper}>
 
             <div className={style.title}>Choose a ride, or swipe up for more</div>
 
             <div className={style.carList}>
-                {carList.map((car, index) => (
-                    <div key={index} className={style.car}>
+                {carList.map((car, index) => ( 
+                    <div 
+                        key={index}  
+                        className={`${selectedRide.service === car.service
+                            ? style.selectedCar 
+                            : style.car
+                            }`} 
+                        onClick={() => { 
+                            setSelectedRide(car)
+                            setPrice(((basePrice / 10 ** 5) * car.priceMultiplier).toFixed(5))
+                        }} 
+                    >
                         <Image
                             src={car.iconUrl}
                             className={style.carImage}

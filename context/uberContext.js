@@ -9,11 +9,14 @@ export const UberProvider = ({ children }) => {
     const [dropoff, setDropoff] = useState('')
     const [pickupCoordinates, setPickupCoordinates] = useState()
     const [dropoffCoordinates, setDropoffCoordinates] = useState()
+    const [selectedRide, setSelectedRide] = useState([])
+    const [price, setPrice] = useState()
 
     // account address
     const [currentAccount, setCurrentAccount] = useState()
     // userInfo
     const [currentUser, setCurrentUser] = useState([])
+    const [basePrice, setBasePrice] = useState()
 
     // MetaMask Auth
     let metamask
@@ -31,6 +34,9 @@ export const UberProvider = ({ children }) => {
         requestToGetCurrentUserInfo(currentAccount)
     }, [currentAccount])
 
+
+
+    // Wallet Connection
     const checkIfWalletIsConnected = async () => {
         if (!window.ethereum) return
 
@@ -150,6 +156,30 @@ export const UberProvider = ({ children }) => {
         else return
     }, [pickup, dropoff])
 
+    // calculate price
+    useEffect(() => {
+        if (!dropoffCoordinates && !pickupCoordinates) return
+        (async () => {
+            try {
+                const response = await fetch("/api/map/getDuration", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        pickupCoordinates: `${pickupCoordinates[0]},${pickupCoordinates[1]}`,
+                        dropoffCoordinates: `${dropoffCoordinates[0]},${dropoffCoordinates[1]}`
+                    })
+                })
+                const data = await response.json()
+                setBasePrice(Math.round(await data.data))
+            }
+            catch (err) {
+                console.log(err)
+            }
+        })()
+    }, [])
+
     return (
         <UberContext.Provider
             value={{
@@ -163,7 +193,12 @@ export const UberProvider = ({ children }) => {
                 setDropoffCoordinates,
                 connectWallet,
                 currentAccount,
-                currentUser
+                currentUser,
+                selectedRide,
+                setSelectedRide,
+                price,
+                setPrice,
+                basePrice,
             }}
         >
             {children}

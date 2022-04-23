@@ -4,17 +4,17 @@ const query = `
 *[_type=="rides"]{
   "service": title,
   "iconUrl": icon.asset->url, 
-  priceMultiplier,
+  priceMultiplier, 
   orderById
 }|order(orderById asc)
 ` 
 
 const getRideTypes = async (req, res) => {
-    try {
+    try { 
         const sanityResponse = await client.fetch(query)
 
         res.status(200).send({
-            message: "Success",
+            message: "Success", 
             data: sanityResponse
         })
     }
